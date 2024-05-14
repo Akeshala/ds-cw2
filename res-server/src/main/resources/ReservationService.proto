@@ -2,12 +2,6 @@ syntax = "proto3";
 option java_multiple_files = true;
 package com.akeshala.cw2.grpc.generated;
 
-// Enums
-enum Status {
-    SUCCESS = 0;
-    FAILURE = 1;
-}
-
 enum Role {
     ADMIN = 0;
     INVENTORY_CLERK = 1;
@@ -21,17 +15,11 @@ enum Type {
     NEW_ARRIVAL = 2;
 }
 
-// Common Messages
-message StatusResponse {
-    Status status = 1;
-    string message = 2;
-}
-
 message UserRequest {
     string userName = 1;
 }
 
-// User Messages
+// User
 message User {
     string userName = 1;
     string firstName = 2;
@@ -51,11 +39,16 @@ message UserAddRequest {
     bool isSentByPrimary = 7;
 }
 
-service UserAddService {
-    rpc addUser(UserAddRequest) returns (StatusResponse);
+message UserAddResponse {
+    bool status = 1;
+    string message = 2;
 }
 
-// Item Messages
+service UserAddService {
+    rpc addUser(UserAddRequest) returns (UserAddResponse);
+}
+
+// Item
 message Item {
     string itemId = 1;
     string itemName = 2;
@@ -85,9 +78,13 @@ message ItemAddRequest {
     bool isSentByPrimary = 7;
 }
 
-// Item Services
+message ItemAddResponse {
+    bool status = 1;
+    string message = 2;
+}
+
 service ItemAddService {
-    rpc addItem(ItemAddRequest) returns (StatusResponse);
+    rpc addItem(ItemAddRequest) returns (ItemAddResponse);
 }
 
 message ItemUpdateRequest {
@@ -98,8 +95,13 @@ message ItemUpdateRequest {
     bool isSentByPrimary = 5;
 }
 
+message ItemUpdateResponse {
+    bool status = 1;
+    string message = 2;
+}
+
 service ItemUpdateService {
-    rpc updateItem(ItemUpdateRequest) returns (StatusResponse);
+    rpc updateItem(ItemUpdateRequest) returns (ItemUpdateResponse);
 }
 
 message ItemDeleteRequest {
@@ -108,11 +110,15 @@ message ItemDeleteRequest {
     bool isSentByPrimary = 3;
 }
 
-service ItemDeleteService {
-    rpc deleteItem(ItemDeleteRequest) returns (StatusResponse);
+message ItemDeleteResponse {
+    bool status = 1;
+    string message = 2;
 }
 
-// Item Search Services
+service ItemDeleteService {
+    rpc deleteItem(ItemDeleteRequest) returns (ItemDeleteResponse);
+}
+
 message ItemSellerResponse {
     repeated Item items = 1;
 }
@@ -126,7 +132,7 @@ service ItemSearchService {
     rpc getAllItems(UserRequest) returns (ItemGetAllResponse);
 }
 
-// Reservation Services
+// Reserve
 message Reservation {
     string reservationId = 1;
     string itemId = 2;
@@ -151,8 +157,13 @@ message ReserveRequest {
     bool isSentByPrimary = 7;
 }
 
+message ReserveServiceResponse {
+    bool status = 1;
+    string message = 2;
+}
+
 service ReserveService {
-    rpc reserveItem(ReserveRequest) returns (StatusResponse);
+    rpc reserveItem(ReserveRequest) returns (ReserveServiceResponse);
 }
 
 service ReservationGetService {

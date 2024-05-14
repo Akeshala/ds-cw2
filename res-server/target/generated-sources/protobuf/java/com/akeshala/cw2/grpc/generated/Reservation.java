@@ -5,7 +5,7 @@ package com.akeshala.cw2.grpc.generated;
 
 /**
  * <pre>
- * Reservation Services
+ * Reserve
  * </pre>
  *
  * Protobuf type {@code com.akeshala.cw2.grpc.generated.Reservation}
@@ -616,7 +616,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Reservation Services
+   * Reserve
    * </pre>
    *
    * Protobuf type {@code com.akeshala.cw2.grpc.generated.Reservation}

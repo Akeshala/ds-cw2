@@ -21,7 +21,7 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
     private ManagedChannel channel = null;
     private final ReservationServer server;
     private final DataProviderImpl dataProvider;
-    private Status status = Status.FAILURE;
+    private boolean status = false;
     private String statusMessage = "";
     private AbstractMap.SimpleEntry<String, ItemAddRequest> tempDataHolder;
     public ItemAddServiceImpl(ReservationServer reservationServer, DataProviderImpl dataProvider) {
@@ -29,7 +29,7 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
         this.dataProvider = dataProvider;
     }
 
-    private StatusResponse callServer(ItemAddRequest itemAddRequest, boolean isSentByPrimary,
+    private ItemAddResponse callServer(ItemAddRequest itemAddRequest, boolean isSentByPrimary,
                                       String IPAddress, int port) {
         System.out.println("Call Server " + IPAddress + ":" + port);
         channel = ManagedChannelBuilder.forAddress(IPAddress, port)
@@ -39,11 +39,11 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
         ItemAddRequest request = itemAddRequest.toBuilder()
                 .setIsSentByPrimary(isSentByPrimary)
                 .build();
-        StatusResponse response = clientStub.addItem(request);
+        ItemAddResponse response = clientStub.addItem(request);
         return response;
     }
 
-    private StatusResponse callPrimary(ItemAddRequest itemAddRequest) {
+    private ItemAddResponse callPrimary(ItemAddRequest itemAddRequest) {
         System.out.println("Calling Primary server");
         String[] currentLeaderData = server.getLeaderData();
         String IPAddress = currentLeaderData[0];
@@ -77,12 +77,12 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
     @Override
     public void onGlobalAbort() {
         tempDataHolder = null;
-        status = Status.FAILURE;
+        status = false;
         System.out.println("Transaction Aborted by the Coordinator");
     }
 
     @Override
-    public synchronized void addItem(ItemAddRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void addItem(ItemAddRequest request, StreamObserver<ItemAddResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {
@@ -110,17 +110,14 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
                     ((DistributedTxParticipant) server.getTransactionItemAdd()).voteAbort();
                 }
             } else {
-                StatusResponse response = callPrimary(request);
-                if (response.getStatus() == Status.SUCCESS) {
-                    status = Status.SUCCESS;
+                ItemAddResponse response = callPrimary(request);
+                if (response.getStatus()) {
+                    status = true;
                 }
             }
         }
-        StatusResponse response = StatusResponse
-                .newBuilder()
-                .setStatus(status)
-                .setMessage(statusMessage)
-                .build();
+        ItemAddResponse response = ItemAddResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
+
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -128,14 +125,14 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
     private boolean checkEligibility(ItemAddRequest request) {
         if (!dataProvider.isUserExist(request.getSellerName())) {
             statusMessage = "Seller does not exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         User seller = dataProvider.getUser(request.getSellerName());
         if ((seller.getRole() == Role.INVENTORY_CLERK && request.getType() != Type.NEW_ARRIVAL)
         || (seller.getRole() != Role.INVENTORY_CLERK && request.getType() == Type.NEW_ARRIVAL)) {
             statusMessage = "User has conflicting role";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         return true;
@@ -146,7 +143,7 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
             ItemAddRequest request = tempDataHolder.getValue();
             dataProvider.addItem(request);
             System.out.println("Item " + request.getItemName() + " of type " + request.getType() + " Added & committed");
-            status = Status.SUCCESS;
+            status = true;
             statusMessage = "Item Added Successfully";
             tempDataHolder = null;
         }

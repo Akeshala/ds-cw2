@@ -5,7 +5,7 @@ package com.akeshala.cw2.grpc.generated;
 
 /**
  * <pre>
- * User Messages
+ * User
  * </pre>
  *
  * Protobuf type {@code com.akeshala.cw2.grpc.generated.User}
@@ -541,7 +541,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * User Messages
+   * User
    * </pre>
    *
    * Protobuf type {@code com.akeshala.cw2.grpc.generated.User}

@@ -22,7 +22,7 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
     private ManagedChannel channel = null;
     private final ReservationServer server;
     private final DataProviderImpl dataProvider;
-    private Status status = Status.FAILURE;
+    private boolean status = false;
     private String statusMessage = "";
     private AbstractMap.SimpleEntry<String, UserAddRequest> tempDataHolder;
     public UserAddServiceImpl(ReservationServer reservationServer, DataProviderImpl dataProvider) {
@@ -39,12 +39,12 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
     @Override
     public void onGlobalAbort() {
         tempDataHolder = null;
-        status = Status.FAILURE;
+        status = false;
         System.out.println("Global Abort");
     }
 
     @Override
-    public synchronized void addUser(UserAddRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void addUser(UserAddRequest request, StreamObserver<UserAddResponse> responseObserver) {
         if (server.isLeader()) {
             try {
                 startDistributedTx(request.getUserName(), request);
@@ -68,9 +68,9 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
                         ((DistributedTxParticipant) server.getTransactionUserAdd()).voteAbort();
                     }
                 } else {
-                    StatusResponse response = callPrimary(request);
-                    if (response.getStatus() == Status.SUCCESS) {
-                        status = Status.SUCCESS;
+                    UserAddResponse response = callPrimary(request);
+                    if (response.getStatus()) {
+                        status = true;
                     }
                 }
             } catch (Exception e) {
@@ -79,14 +79,14 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
             }
         }
 
-        StatusResponse response = StatusResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
+        UserAddResponse response = UserAddResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
 
-    private StatusResponse callServer(
+    private UserAddResponse callServer(
             UserAddRequest userAddRequest,
             boolean isSentByPrimary,
             String IPAddress,
@@ -98,12 +98,12 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
         clientStub = UserAddServiceGrpc.newBlockingStub(channel);
 
         UserAddRequest request = userAddRequest.toBuilder().setIsSentByPrimary(isSentByPrimary).build();
-        StatusResponse statusResponse = clientStub.addUser(request);
+        UserAddResponse response = clientStub.addUser(request);
 
-        return statusResponse;
+        return response;
     }
 
-    private StatusResponse callPrimary(UserAddRequest userAddRequest) {
+    private UserAddResponse callPrimary(UserAddRequest userAddRequest) {
         String[] leaderData = server.getLeaderData();
         String IPAddress = leaderData[0];
         String port = leaderData[1];
@@ -131,7 +131,7 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
     private boolean checkEligibility(UserAddRequest request) {
         if (dataProvider.isUserExist(request.getUserName())) {
             statusMessage = "UserName exists";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         return true;
@@ -144,7 +144,7 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
 
             System.out.println("User " + request.getUserName() + " of Role " + request.getRole() + " Added & committed");
 
-            status = Status.SUCCESS;
+            status = true;
             statusMessage = "User Added Successfully";
             tempDataHolder = null;
         }

@@ -22,52 +22,13 @@ public class ItemDeleteServiceImpl extends ItemDeleteServiceGrpc.ItemDeleteServi
     private ManagedChannel channel = null;
     private final ReservationServer server;
     private final DataProviderImpl dataProvider;
-    private Status status = Status.FAILURE;
+    private boolean status = false;
     private String statusMessage = "";
     private AbstractMap.SimpleEntry<String, ItemDeleteRequest> tempDataHolder;
+
     public ItemDeleteServiceImpl(ReservationServer reservationServer, DataProviderImpl dataProvider) {
         this.server = reservationServer;
         this.dataProvider = dataProvider;
-    }
-
-    private StatusResponse callServer(ItemDeleteRequest itemDeleteRequest, boolean isSentByPrimary,
-                                      String IPAddress, int port) {
-        System.out.println("Call Server " + IPAddress + ":" + port);
-        channel = ManagedChannelBuilder.forAddress(IPAddress, port)
-                .usePlaintext()
-                .build();
-        clientStub = ItemDeleteServiceGrpc.newBlockingStub(channel);
-        ItemDeleteRequest request = itemDeleteRequest.toBuilder()
-                .setIsSentByPrimary(isSentByPrimary)
-                .build();
-        StatusResponse response = clientStub.deleteItem(request);
-        return response;
-    }
-
-    private StatusResponse callPrimary(ItemDeleteRequest itemDeleteRequest) {
-        System.out.println("Calling Primary server");
-        String[] currentLeaderData = server.getLeaderData();
-        String IPAddress = currentLeaderData[0];
-        int port = Integer.parseInt(currentLeaderData[1]);
-        return callServer(itemDeleteRequest, false, IPAddress, port);
-    }
-    private void updateSecondaryServers(ItemDeleteRequest itemDeleteRequest) throws KeeperException, InterruptedException {
-        System.out.println("Updating secondary servers");
-        List<String[]> othersData = server.getSecondaryData();
-        for (String[] data : othersData) {
-            String IPAddress = data[0];
-            int port = Integer.parseInt(data[1]);
-            callServer(itemDeleteRequest, true, IPAddress, port);
-        }
-    }
-
-    private void startDistributedTx(String itemId, ItemDeleteRequest itemDeleteRequest) {
-        try {
-            server.getTransactionItemDelete().start("delete"+itemId, String.valueOf(UUID.randomUUID()));
-            tempDataHolder = new AbstractMap.SimpleEntry<>(itemId, itemDeleteRequest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -78,12 +39,12 @@ public class ItemDeleteServiceImpl extends ItemDeleteServiceGrpc.ItemDeleteServi
     @Override
     public void onGlobalAbort() {
         tempDataHolder = null;
-        status = Status.FAILURE;
+        status = false;
         System.out.println("Transaction Aborted by the Coordinator");
     }
 
     @Override
-    public synchronized void deleteItem(ItemDeleteRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void deleteItem(ItemDeleteRequest request, StreamObserver<ItemDeleteResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {
@@ -111,17 +72,15 @@ public class ItemDeleteServiceImpl extends ItemDeleteServiceGrpc.ItemDeleteServi
                     ((DistributedTxParticipant) server.getTransactionItemDelete()).voteAbort();
                 }
             } else {
-                StatusResponse response = callPrimary(request);
-                if (response.getStatus() == Status.SUCCESS) {
-                    status = Status.SUCCESS;
+                ItemDeleteResponse response = callPrimary(request);
+                if (response.getStatus()) {
+                    status = true;
                 }
             }
         }
-        StatusResponse response = StatusResponse
-                .newBuilder()
-                .setStatus(status)
-                .setMessage(statusMessage)
-                .build();
+
+        ItemDeleteResponse response = ItemDeleteResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
+
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -129,12 +88,12 @@ public class ItemDeleteServiceImpl extends ItemDeleteServiceGrpc.ItemDeleteServi
     private boolean checkEligibility(ItemDeleteRequest request) {
         if (!dataProvider.isUserExist(request.getSellerName())) {
             statusMessage = "Seller does not exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         if (!dataProvider.isItemExist(request.getItemId())) {
             statusMessage = "Item does not exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         return true;
@@ -145,9 +104,53 @@ public class ItemDeleteServiceImpl extends ItemDeleteServiceGrpc.ItemDeleteServi
             ItemDeleteRequest request = tempDataHolder.getValue();
             dataProvider.deleteItem(request.getItemId());
             System.out.println("Item " + request.getItemId() + " Deleted & committed");
-            status = Status.SUCCESS;
+            status = true;
             statusMessage = "Item Deleted Successfully";
             tempDataHolder = null;
+        }
+    }
+
+    private ItemDeleteResponse callServer(
+            ItemDeleteRequest itemDeleteRequest,
+            boolean isSentByPrimary,
+            String IPAddress,
+            int port
+    ) {
+        System.out.println("Call Server " + IPAddress + ":" + port);
+        channel = ManagedChannelBuilder.forAddress(IPAddress, port)
+                .usePlaintext()
+                .build();
+        clientStub = ItemDeleteServiceGrpc.newBlockingStub(channel);
+        ItemDeleteRequest request = itemDeleteRequest.toBuilder()
+                .setIsSentByPrimary(isSentByPrimary)
+                .build();
+        ItemDeleteResponse response = clientStub.deleteItem(request);
+        return response;
+    }
+
+    private ItemDeleteResponse callPrimary(ItemDeleteRequest itemDeleteRequest) {
+        System.out.println("Calling Primary server");
+        String[] currentLeaderData = server.getLeaderData();
+        String IPAddress = currentLeaderData[0];
+        int port = Integer.parseInt(currentLeaderData[1]);
+        return callServer(itemDeleteRequest, false, IPAddress, port);
+    }
+    private void updateSecondaryServers(ItemDeleteRequest itemDeleteRequest) throws KeeperException, InterruptedException {
+        System.out.println("Updating secondary servers");
+        List<String[]> othersData = server.getSecondaryData();
+        for (String[] data : othersData) {
+            String IPAddress = data[0];
+            int port = Integer.parseInt(data[1]);
+            callServer(itemDeleteRequest, true, IPAddress, port);
+        }
+    }
+
+    private void startDistributedTx(String itemId, ItemDeleteRequest itemDeleteRequest) {
+        try {
+            server.getTransactionItemDelete().start("delete"+itemId, String.valueOf(UUID.randomUUID()));
+            tempDataHolder = new AbstractMap.SimpleEntry<>(itemId, itemDeleteRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

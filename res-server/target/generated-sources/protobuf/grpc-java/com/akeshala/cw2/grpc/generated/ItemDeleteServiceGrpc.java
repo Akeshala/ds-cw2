@@ -15,28 +15,28 @@ public final class ItemDeleteServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemDeleteRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getDeleteItemMethod;
+      com.akeshala.cw2.grpc.generated.ItemDeleteResponse> getDeleteItemMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deleteItem",
       requestType = com.akeshala.cw2.grpc.generated.ItemDeleteRequest.class,
-      responseType = com.akeshala.cw2.grpc.generated.StatusResponse.class,
+      responseType = com.akeshala.cw2.grpc.generated.ItemDeleteResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemDeleteRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getDeleteItemMethod() {
-    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemDeleteRequest, com.akeshala.cw2.grpc.generated.StatusResponse> getDeleteItemMethod;
+      com.akeshala.cw2.grpc.generated.ItemDeleteResponse> getDeleteItemMethod() {
+    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemDeleteRequest, com.akeshala.cw2.grpc.generated.ItemDeleteResponse> getDeleteItemMethod;
     if ((getDeleteItemMethod = ItemDeleteServiceGrpc.getDeleteItemMethod) == null) {
       synchronized (ItemDeleteServiceGrpc.class) {
         if ((getDeleteItemMethod = ItemDeleteServiceGrpc.getDeleteItemMethod) == null) {
           ItemDeleteServiceGrpc.getDeleteItemMethod = getDeleteItemMethod =
-              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ItemDeleteRequest, com.akeshala.cw2.grpc.generated.StatusResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ItemDeleteRequest, com.akeshala.cw2.grpc.generated.ItemDeleteResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "deleteItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.akeshala.cw2.grpc.generated.ItemDeleteRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.akeshala.cw2.grpc.generated.StatusResponse.getDefaultInstance()))
+                  com.akeshala.cw2.grpc.generated.ItemDeleteResponse.getDefaultInstance()))
               .setSchemaDescriptor(new ItemDeleteServiceMethodDescriptorSupplier("deleteItem"))
               .build();
         }
@@ -96,7 +96,7 @@ public final class ItemDeleteServiceGrpc {
     /**
      */
     public void deleteItem(com.akeshala.cw2.grpc.generated.ItemDeleteRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemDeleteResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteItemMethod(), responseObserver);
     }
 
@@ -107,7 +107,7 @@ public final class ItemDeleteServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.akeshala.cw2.grpc.generated.ItemDeleteRequest,
-                com.akeshala.cw2.grpc.generated.StatusResponse>(
+                com.akeshala.cw2.grpc.generated.ItemDeleteResponse>(
                   this, METHODID_DELETE_ITEM)))
           .build();
     }
@@ -130,7 +130,7 @@ public final class ItemDeleteServiceGrpc {
     /**
      */
     public void deleteItem(com.akeshala.cw2.grpc.generated.ItemDeleteRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemDeleteResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getDeleteItemMethod(), getCallOptions()), request, responseObserver);
     }
@@ -152,7 +152,7 @@ public final class ItemDeleteServiceGrpc {
 
     /**
      */
-    public com.akeshala.cw2.grpc.generated.StatusResponse deleteItem(com.akeshala.cw2.grpc.generated.ItemDeleteRequest request) {
+    public com.akeshala.cw2.grpc.generated.ItemDeleteResponse deleteItem(com.akeshala.cw2.grpc.generated.ItemDeleteRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getDeleteItemMethod(), getCallOptions(), request);
     }
@@ -174,7 +174,7 @@ public final class ItemDeleteServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.StatusResponse> deleteItem(
+    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.ItemDeleteResponse> deleteItem(
         com.akeshala.cw2.grpc.generated.ItemDeleteRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getDeleteItemMethod(), getCallOptions()), request);
@@ -202,7 +202,7 @@ public final class ItemDeleteServiceGrpc {
       switch (methodId) {
         case METHODID_DELETE_ITEM:
           serviceImpl.deleteItem((com.akeshala.cw2.grpc.generated.ItemDeleteRequest) request,
-              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemDeleteResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();

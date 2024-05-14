@@ -4,10 +4,6 @@
 package com.akeshala.cw2.grpc.generated;
 
 /**
- * <pre>
- * Item Search Services
- * </pre>
- *
  * Protobuf type {@code com.akeshala.cw2.grpc.generated.ItemSellerResponse}
  */
 public final class ItemSellerResponse extends
@@ -296,10 +292,6 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   * Item Search Services
-   * </pre>
-   *
    * Protobuf type {@code com.akeshala.cw2.grpc.generated.ItemSellerResponse}
    */
   public static final class Builder extends

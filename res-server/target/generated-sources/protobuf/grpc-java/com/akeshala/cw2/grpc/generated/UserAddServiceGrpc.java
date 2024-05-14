@@ -15,28 +15,28 @@ public final class UserAddServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.UserAddRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getAddUserMethod;
+      com.akeshala.cw2.grpc.generated.UserAddResponse> getAddUserMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "addUser",
       requestType = com.akeshala.cw2.grpc.generated.UserAddRequest.class,
-      responseType = com.akeshala.cw2.grpc.generated.StatusResponse.class,
+      responseType = com.akeshala.cw2.grpc.generated.UserAddResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.UserAddRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getAddUserMethod() {
-    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.UserAddRequest, com.akeshala.cw2.grpc.generated.StatusResponse> getAddUserMethod;
+      com.akeshala.cw2.grpc.generated.UserAddResponse> getAddUserMethod() {
+    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.UserAddRequest, com.akeshala.cw2.grpc.generated.UserAddResponse> getAddUserMethod;
     if ((getAddUserMethod = UserAddServiceGrpc.getAddUserMethod) == null) {
       synchronized (UserAddServiceGrpc.class) {
         if ((getAddUserMethod = UserAddServiceGrpc.getAddUserMethod) == null) {
           UserAddServiceGrpc.getAddUserMethod = getAddUserMethod =
-              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.UserAddRequest, com.akeshala.cw2.grpc.generated.StatusResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.UserAddRequest, com.akeshala.cw2.grpc.generated.UserAddResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "addUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.akeshala.cw2.grpc.generated.UserAddRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.akeshala.cw2.grpc.generated.StatusResponse.getDefaultInstance()))
+                  com.akeshala.cw2.grpc.generated.UserAddResponse.getDefaultInstance()))
               .setSchemaDescriptor(new UserAddServiceMethodDescriptorSupplier("addUser"))
               .build();
         }
@@ -96,7 +96,7 @@ public final class UserAddServiceGrpc {
     /**
      */
     public void addUser(com.akeshala.cw2.grpc.generated.UserAddRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.UserAddResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAddUserMethod(), responseObserver);
     }
 
@@ -107,7 +107,7 @@ public final class UserAddServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.akeshala.cw2.grpc.generated.UserAddRequest,
-                com.akeshala.cw2.grpc.generated.StatusResponse>(
+                com.akeshala.cw2.grpc.generated.UserAddResponse>(
                   this, METHODID_ADD_USER)))
           .build();
     }
@@ -130,7 +130,7 @@ public final class UserAddServiceGrpc {
     /**
      */
     public void addUser(com.akeshala.cw2.grpc.generated.UserAddRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.UserAddResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getAddUserMethod(), getCallOptions()), request, responseObserver);
     }
@@ -152,7 +152,7 @@ public final class UserAddServiceGrpc {
 
     /**
      */
-    public com.akeshala.cw2.grpc.generated.StatusResponse addUser(com.akeshala.cw2.grpc.generated.UserAddRequest request) {
+    public com.akeshala.cw2.grpc.generated.UserAddResponse addUser(com.akeshala.cw2.grpc.generated.UserAddRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getAddUserMethod(), getCallOptions(), request);
     }
@@ -174,7 +174,7 @@ public final class UserAddServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.StatusResponse> addUser(
+    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.UserAddResponse> addUser(
         com.akeshala.cw2.grpc.generated.UserAddRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getAddUserMethod(), getCallOptions()), request);
@@ -202,7 +202,7 @@ public final class UserAddServiceGrpc {
       switch (methodId) {
         case METHODID_ADD_USER:
           serviceImpl.addUser((com.akeshala.cw2.grpc.generated.UserAddRequest) request,
-              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.UserAddResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();

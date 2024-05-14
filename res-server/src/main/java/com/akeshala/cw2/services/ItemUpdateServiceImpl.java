@@ -22,7 +22,7 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
     private ManagedChannel channel = null;
     private final ReservationServer server;
     private final DataProviderImpl dataProvider;
-    private Status status = Status.FAILURE;
+    private boolean status = false;
     private String statusMessage = "";
     private AbstractMap.SimpleEntry<String, ItemUpdateRequest> tempDataHolder;
     public ItemUpdateServiceImpl(ReservationServer reservationServer, DataProviderImpl dataProvider) {
@@ -39,12 +39,12 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
     @Override
     public void onGlobalAbort() {
         tempDataHolder = null;
-        status = Status.FAILURE;
+        status = false;
         System.out.println("Global Abort");
     }
 
     @Override
-    public synchronized void updateItem(ItemUpdateRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void updateItem(ItemUpdateRequest request, StreamObserver<ItemUpdateResponse> responseObserver) {
         try {
             if (server.isLeader()) {
                 startDistributedTx(request.getItemId(), request);
@@ -63,9 +63,9 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
                         ((DistributedTxParticipant) server.getTransactionItemUpdate()).voteAbort();
                     }
                 } else {
-                    StatusResponse response = callPrimary(request);
-                    if (response.getStatus() == Status.SUCCESS) {
-                        status = Status.SUCCESS;
+                    ItemUpdateResponse response = callPrimary(request);
+                    if (response.getStatus()) {
+                        status = true;
                     }
                 }
             }
@@ -74,7 +74,7 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
             e.printStackTrace();
         }
 
-        StatusResponse response = StatusResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
+        ItemUpdateResponse response = ItemUpdateResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -89,7 +89,7 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
         }
     }
 
-    private StatusResponse callServer(
+    private ItemUpdateResponse callServer(
             ItemUpdateRequest itemUpdateRequest,
             boolean isSentByPrimary,
             String IPAddress,
@@ -102,12 +102,11 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
 
         ItemUpdateRequest request = itemUpdateRequest.toBuilder().setIsSentByPrimary(isSentByPrimary).build();
 
-        StatusResponse response = clientStub.updateItem(request);
+        ItemUpdateResponse response = clientStub.updateItem(request);
         return response;
     }
 
-    private StatusResponse callPrimary(ItemUpdateRequest itemUpdateRequest) {
-        System.out.println("Calling Primary server");
+    private ItemUpdateResponse callPrimary(ItemUpdateRequest itemUpdateRequest) {
         String[] currentLeaderData = server.getLeaderData();
         String IPAddress = currentLeaderData[0];
         int port = Integer.parseInt(currentLeaderData[1]);
@@ -115,7 +114,6 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
     }
 
     private void updateSecondaryServers(ItemUpdateRequest itemUpdateRequest) throws KeeperException, InterruptedException {
-        System.out.println("Updating secondary servers");
         List<String[]> othersData = server.getSecondaryData();
         for (String[] data : othersData) {
             String IPAddress = data[0];
@@ -127,12 +125,12 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
     private boolean checkEligibility(ItemUpdateRequest request) {
         if (!dataProvider.isUserExist(request.getSellerName())) {
             statusMessage = "Seller does not exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         if (!dataProvider.isItemExist(request.getItemId())) {
             statusMessage = "Item does not exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
         return true;
@@ -143,7 +141,7 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
             ItemUpdateRequest request = tempDataHolder.getValue();
             dataProvider.updateItem(request);
             System.out.println("Item " + request.getItemId() + " Updated & committed");
-            status = Status.SUCCESS;
+            status = false;
             statusMessage = "Item Updated Successfully";
             tempDataHolder = null;
         }

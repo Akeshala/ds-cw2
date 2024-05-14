@@ -22,7 +22,7 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
     private ManagedChannel channel = null;
     private final ReservationServer server;
     private final DataProviderImpl dataProvider;
-    private Status status = Status.FAILURE;
+    private boolean status = false;
     private String statusMessage = "";
     private AbstractMap.SimpleEntry<String, ReserveRequest> tempDataHolder;
     public ReserveServiceImpl(ReservationServer reservationServer, DataProviderImpl dataProvider) {
@@ -39,12 +39,12 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
     @Override
     public void onGlobalAbort() {
         tempDataHolder = null;
-        status = Status.FAILURE;
+        status = false;
         System.out.println("Global Abort");
     }
 
     @Override
-    public synchronized void reserveItem(ReserveRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void reserveItem(ReserveRequest request, StreamObserver<ReserveServiceResponse> responseObserver) {
         if (server.isLeader()) {
             try {
                 startDistributedTx(request.getReservationId(), request);
@@ -68,9 +68,9 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
                         ((DistributedTxParticipant) server.getTransactionReserve()).voteAbort();
                     }
                 } else {
-                    StatusResponse response = callPrimary(request);
-                    if (response.getStatus() == Status.SUCCESS) {
-                        status = Status.SUCCESS;
+                    ReserveServiceResponse response = callPrimary(request);
+                    if (response.getStatus()) {
+                        status = true;
                     }
                 }
             } catch (Exception e) {
@@ -79,7 +79,7 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
             }
         }
 
-        StatusResponse response = StatusResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
+        ReserveServiceResponse response = ReserveServiceResponse.newBuilder().setStatus(status).setMessage(statusMessage).build();
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -89,26 +89,26 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
 
         if (!dataProvider.isUserExist(request.getBuyerName())) {
             statusMessage = "Buyer does not exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
 
         User buyer = dataProvider.getUser(request.getBuyerName());
         if (buyer.getRole() != Role.BUYER) {
             statusMessage = "User has a conflicting role";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
 
         if (!dataProvider.isItemExist(request.getItemId())) {
             statusMessage = "Item doesn't exist";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
 
         if (dataProvider.getItem(request.getItemId()).getAvailableQuantity() < request.getQuantity()) {
             statusMessage = "Not enough quantity";
-            status = Status.FAILURE;
+            status = false;
             return false;
         }
 
@@ -124,14 +124,14 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
 
             System.out.println("Reservation for " + request.getItemId() + " created & committed");
 
-            status = Status.SUCCESS;
+            status = true;
             statusMessage = "Reservation Created Successfully";
             tempDataHolder = null;
         }
     }
 
 
-    private StatusResponse callServer(
+    private ReserveServiceResponse callServer(
             ReserveRequest reserveRequest,
             boolean isSentByPrimary,
             String IPAddress,
@@ -143,11 +143,11 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
         clientStub = ReserveServiceGrpc.newBlockingStub(channel);
         ReserveRequest request = reserveRequest.toBuilder().setIsSentByPrimary(isSentByPrimary).build();
 
-        StatusResponse statusResponse = clientStub.reserveItem(request);
-        return statusResponse;
+        ReserveServiceResponse response = clientStub.reserveItem(request);
+        return response;
     }
 
-    private StatusResponse callPrimary(ReserveRequest reserveRequest) {
+    private ReserveServiceResponse callPrimary(ReserveRequest reserveRequest) {
         String[] currentLeaderData = server.getLeaderData();
         String IPAddress = currentLeaderData[0];
         int port = Integer.parseInt(currentLeaderData[1]);

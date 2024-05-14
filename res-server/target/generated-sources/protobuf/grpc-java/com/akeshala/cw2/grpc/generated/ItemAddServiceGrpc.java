@@ -3,9 +3,6 @@ package com.akeshala.cw2.grpc.generated;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
 /**
- * <pre>
- * Item Services
- * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.36.0)",
@@ -18,28 +15,28 @@ public final class ItemAddServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemAddRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getAddItemMethod;
+      com.akeshala.cw2.grpc.generated.ItemAddResponse> getAddItemMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "addItem",
       requestType = com.akeshala.cw2.grpc.generated.ItemAddRequest.class,
-      responseType = com.akeshala.cw2.grpc.generated.StatusResponse.class,
+      responseType = com.akeshala.cw2.grpc.generated.ItemAddResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemAddRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getAddItemMethod() {
-    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemAddRequest, com.akeshala.cw2.grpc.generated.StatusResponse> getAddItemMethod;
+      com.akeshala.cw2.grpc.generated.ItemAddResponse> getAddItemMethod() {
+    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemAddRequest, com.akeshala.cw2.grpc.generated.ItemAddResponse> getAddItemMethod;
     if ((getAddItemMethod = ItemAddServiceGrpc.getAddItemMethod) == null) {
       synchronized (ItemAddServiceGrpc.class) {
         if ((getAddItemMethod = ItemAddServiceGrpc.getAddItemMethod) == null) {
           ItemAddServiceGrpc.getAddItemMethod = getAddItemMethod =
-              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ItemAddRequest, com.akeshala.cw2.grpc.generated.StatusResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ItemAddRequest, com.akeshala.cw2.grpc.generated.ItemAddResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "addItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.akeshala.cw2.grpc.generated.ItemAddRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.akeshala.cw2.grpc.generated.StatusResponse.getDefaultInstance()))
+                  com.akeshala.cw2.grpc.generated.ItemAddResponse.getDefaultInstance()))
               .setSchemaDescriptor(new ItemAddServiceMethodDescriptorSupplier("addItem"))
               .build();
         }
@@ -93,16 +90,13 @@ public final class ItemAddServiceGrpc {
   }
 
   /**
-   * <pre>
-   * Item Services
-   * </pre>
    */
   public static abstract class ItemAddServiceImplBase implements io.grpc.BindableService {
 
     /**
      */
     public void addItem(com.akeshala.cw2.grpc.generated.ItemAddRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemAddResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAddItemMethod(), responseObserver);
     }
 
@@ -113,16 +107,13 @@ public final class ItemAddServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.akeshala.cw2.grpc.generated.ItemAddRequest,
-                com.akeshala.cw2.grpc.generated.StatusResponse>(
+                com.akeshala.cw2.grpc.generated.ItemAddResponse>(
                   this, METHODID_ADD_ITEM)))
           .build();
     }
   }
 
   /**
-   * <pre>
-   * Item Services
-   * </pre>
    */
   public static final class ItemAddServiceStub extends io.grpc.stub.AbstractAsyncStub<ItemAddServiceStub> {
     private ItemAddServiceStub(
@@ -139,16 +130,13 @@ public final class ItemAddServiceGrpc {
     /**
      */
     public void addItem(com.akeshala.cw2.grpc.generated.ItemAddRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemAddResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getAddItemMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
   /**
-   * <pre>
-   * Item Services
-   * </pre>
    */
   public static final class ItemAddServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<ItemAddServiceBlockingStub> {
     private ItemAddServiceBlockingStub(
@@ -164,16 +152,13 @@ public final class ItemAddServiceGrpc {
 
     /**
      */
-    public com.akeshala.cw2.grpc.generated.StatusResponse addItem(com.akeshala.cw2.grpc.generated.ItemAddRequest request) {
+    public com.akeshala.cw2.grpc.generated.ItemAddResponse addItem(com.akeshala.cw2.grpc.generated.ItemAddRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getAddItemMethod(), getCallOptions(), request);
     }
   }
 
   /**
-   * <pre>
-   * Item Services
-   * </pre>
    */
   public static final class ItemAddServiceFutureStub extends io.grpc.stub.AbstractFutureStub<ItemAddServiceFutureStub> {
     private ItemAddServiceFutureStub(
@@ -189,7 +174,7 @@ public final class ItemAddServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.StatusResponse> addItem(
+    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.ItemAddResponse> addItem(
         com.akeshala.cw2.grpc.generated.ItemAddRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getAddItemMethod(), getCallOptions()), request);
@@ -217,7 +202,7 @@ public final class ItemAddServiceGrpc {
       switch (methodId) {
         case METHODID_ADD_ITEM:
           serviceImpl.addItem((com.akeshala.cw2.grpc.generated.ItemAddRequest) request,
-              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemAddResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();

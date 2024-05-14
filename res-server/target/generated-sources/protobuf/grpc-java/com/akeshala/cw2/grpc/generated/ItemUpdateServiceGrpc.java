@@ -15,28 +15,28 @@ public final class ItemUpdateServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemUpdateRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getUpdateItemMethod;
+      com.akeshala.cw2.grpc.generated.ItemUpdateResponse> getUpdateItemMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "updateItem",
       requestType = com.akeshala.cw2.grpc.generated.ItemUpdateRequest.class,
-      responseType = com.akeshala.cw2.grpc.generated.StatusResponse.class,
+      responseType = com.akeshala.cw2.grpc.generated.ItemUpdateResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemUpdateRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getUpdateItemMethod() {
-    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemUpdateRequest, com.akeshala.cw2.grpc.generated.StatusResponse> getUpdateItemMethod;
+      com.akeshala.cw2.grpc.generated.ItemUpdateResponse> getUpdateItemMethod() {
+    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ItemUpdateRequest, com.akeshala.cw2.grpc.generated.ItemUpdateResponse> getUpdateItemMethod;
     if ((getUpdateItemMethod = ItemUpdateServiceGrpc.getUpdateItemMethod) == null) {
       synchronized (ItemUpdateServiceGrpc.class) {
         if ((getUpdateItemMethod = ItemUpdateServiceGrpc.getUpdateItemMethod) == null) {
           ItemUpdateServiceGrpc.getUpdateItemMethod = getUpdateItemMethod =
-              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ItemUpdateRequest, com.akeshala.cw2.grpc.generated.StatusResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ItemUpdateRequest, com.akeshala.cw2.grpc.generated.ItemUpdateResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "updateItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.akeshala.cw2.grpc.generated.ItemUpdateRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.akeshala.cw2.grpc.generated.StatusResponse.getDefaultInstance()))
+                  com.akeshala.cw2.grpc.generated.ItemUpdateResponse.getDefaultInstance()))
               .setSchemaDescriptor(new ItemUpdateServiceMethodDescriptorSupplier("updateItem"))
               .build();
         }
@@ -96,7 +96,7 @@ public final class ItemUpdateServiceGrpc {
     /**
      */
     public void updateItem(com.akeshala.cw2.grpc.generated.ItemUpdateRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemUpdateResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateItemMethod(), responseObserver);
     }
 
@@ -107,7 +107,7 @@ public final class ItemUpdateServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.akeshala.cw2.grpc.generated.ItemUpdateRequest,
-                com.akeshala.cw2.grpc.generated.StatusResponse>(
+                com.akeshala.cw2.grpc.generated.ItemUpdateResponse>(
                   this, METHODID_UPDATE_ITEM)))
           .build();
     }
@@ -130,7 +130,7 @@ public final class ItemUpdateServiceGrpc {
     /**
      */
     public void updateItem(com.akeshala.cw2.grpc.generated.ItemUpdateRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemUpdateResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getUpdateItemMethod(), getCallOptions()), request, responseObserver);
     }
@@ -152,7 +152,7 @@ public final class ItemUpdateServiceGrpc {
 
     /**
      */
-    public com.akeshala.cw2.grpc.generated.StatusResponse updateItem(com.akeshala.cw2.grpc.generated.ItemUpdateRequest request) {
+    public com.akeshala.cw2.grpc.generated.ItemUpdateResponse updateItem(com.akeshala.cw2.grpc.generated.ItemUpdateRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getUpdateItemMethod(), getCallOptions(), request);
     }
@@ -174,7 +174,7 @@ public final class ItemUpdateServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.StatusResponse> updateItem(
+    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.ItemUpdateResponse> updateItem(
         com.akeshala.cw2.grpc.generated.ItemUpdateRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getUpdateItemMethod(), getCallOptions()), request);
@@ -202,7 +202,7 @@ public final class ItemUpdateServiceGrpc {
       switch (methodId) {
         case METHODID_UPDATE_ITEM:
           serviceImpl.updateItem((com.akeshala.cw2.grpc.generated.ItemUpdateRequest) request,
-              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ItemUpdateResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
