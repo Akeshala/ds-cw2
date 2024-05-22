@@ -34,21 +34,20 @@ public class ItemGetAllService {
         UserRequest request = UserRequest.newBuilder().setUserName(userName).build();
         ItemGetAllResponse response = clientStub.getAllItems(request);
 
-        // table header
-        System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------+%n");
-        System.out.printf(
-                "%n| %-50s| %-12s| %-15s| %-10s| %-20s|%-16s|%n",
-                "Item Id", "Item Name", "Type", "Price", "Available Quantity", "Seller Name"
-        );
-        System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------+%n");
+        // Table header
+        String headerFormat = "| %-60s| %-15s| %-18s| %-12s| %-22s|%-18s|%n";
+        String headerBorder = "+-----------------------------------------------------------------------------------------------------------------------------------------------------------+";
 
+        System.out.printf("%n%s %n", headerBorder);
+        System.out.printf(headerFormat, "Item Id", "Item Name", "Type", "Price", "Available Quantity", "Seller Name");
+        System.out.printf("%s %n", headerBorder);
+
+        // Print items
         for (ItemDTO item : response.getItemsList()) {
-            System.out.printf(
-                    "%n| %-50s| %-12s| %-15s| %-10s| %-20s|%-16s|%n",
-                    item.getItemId(), item.getItemName(), item.getType(), item.getPrice(), item.getAvailableQuantity(), item.getSellerName()
-            );
-            System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------+%n");
+            System.out.printf(headerFormat, item.getItemId(), item.getItemName(), item.getType(), item.getPrice(), item.getAvailableQuantity(), item.getSellerName());
+            System.out.printf("%s %n", headerBorder);
         }
+        System.out.println();
 
         Thread.sleep(1000);
     }

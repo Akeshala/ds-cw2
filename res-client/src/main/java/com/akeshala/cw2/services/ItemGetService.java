@@ -33,18 +33,20 @@ public class ItemGetService {
         UserRequest request = UserRequest.newBuilder().setUserName(userName).build();
         ItemSellerResponse response = clientStub.getSellerItems(request);
 
-        System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------------------+%n");
-        System.out.printf(
-                "%n| %-50s| %-12s| %-15s| %-10s| %-20s|%-20s|%-16s|%n",
-                "Item Id", "Item Name", "Type", "Price", "Available Quantity", "Reserved Quantity", "Seller Name"
-        );
-        System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------------------+%n");
+        String horizontalLine = "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+";
+        String headerFormat = "| %-60s| %-15s| %-18s| %-12s| %-22s|%-22s|%-18s|\n";
+        String itemFormat = "| %-60s| %-15s| %-18s| %-12s| %-22s|%-22s|%-18s|\n";
+
+        System.out.printf("%n%s %n", horizontalLine);
+        System.out.printf(headerFormat, "Item Id", "Item Name", "Type", "Price", "Available Quantity", "Reserved Quantity", "Seller Name");
+        System.out.printf("%s %n", horizontalLine);
 
         for (Item item : response.getItemsList()) {
-            System.out.printf("%n| %-50s| %-12s| %-15s| %-10s| %-20s|%-20s|%-16s|%n", item.getItemId(),
-                    item.getItemName(), item.getType(), item.getPrice(), item.getAvailableQuantity(), item.getReservedQuantity(), item.getSellerName());
-            System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------------------+%n");
+            System.out.printf(itemFormat, item.getItemId(), item.getItemName(), item.getType(), item.getPrice(), item.getAvailableQuantity(), item.getReservedQuantity(), item.getSellerName());
+            System.out.printf("%s", horizontalLine);
         }
+        System.out.println();
+
         Thread.sleep(1000);
     }
 

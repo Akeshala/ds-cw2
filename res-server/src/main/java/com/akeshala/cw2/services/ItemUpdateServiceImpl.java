@@ -25,6 +25,7 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
     private boolean status = false;
     private String statusMessage = "";
     private AbstractMap.SimpleEntry<String, ItemUpdateRequest> tempDataHolder;
+
     public ItemUpdateServiceImpl(ReservationServer reservationServer, DataProviderImpl dataProvider) {
         this.server = reservationServer;
         this.dataProvider = dataProvider;

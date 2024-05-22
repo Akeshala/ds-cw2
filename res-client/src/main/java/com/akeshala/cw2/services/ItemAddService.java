@@ -2,7 +2,7 @@ package com.akeshala.cw2.services;
 
 import com.akeshala.cw2.grpc.generated.ItemAddServiceGrpc;
 import com.akeshala.cw2.grpc.generated.ItemAddRequest;
-import com.akeshala.cw2.grpc.generated.StatusResponse;
+import com.akeshala.cw2.grpc.generated.AddItemResponse;
 import com.akeshala.cw2.grpc.generated.Type;
 import io.grpc.ManagedChannel;
 
@@ -60,7 +60,7 @@ public class ItemAddService {
                 .setIsSentByPrimary(false)
                 .build();
 
-        StatusResponse response = clientStub.addItem(request);
+        AddItemResponse response = clientStub.addItem(request);
         System.out.printf("Add item: " + response.getStatus() + ". " + response.getMessage() + "\n");
 
         Thread.sleep(1000);

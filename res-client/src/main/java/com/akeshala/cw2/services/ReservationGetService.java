@@ -33,21 +33,18 @@ public class ReservationGetService {
         UserRequest request = UserRequest.newBuilder().setUserName(userName).build();
         ReservationSearchResponse response = clientStub.getReservations(request);
 
-        System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------------------------------+%n");
-        System.out.printf(
-                "%n| %-50s| %-50s| %-12s| %-16s| %-12s|%-15s|%-15s|%-16s|%n",
-                "Reservation Id", "Item Id", "Item Name", "Buyer Name", "Quantity", "Reservation Date", "Payment Amount", "Seller Name"
-        );
-        System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------------------------------+%n");
+        String horizontalLine = "+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+";
+        String headerFormat = "| %-60s| %-60s| %-15s| %-18s| %-15s|%-18s|%-18s|%-18s|%n";
+        String itemFormat = "| %-60s| %-60s| %-15s| %-18s| %-15s|%-18s|%-18s|%-18s|%n";
+
+        System.out.printf("%n%s %n", horizontalLine);
+        System.out.printf(headerFormat, "Reservation Id", "Item Id", "Item Name", "Buyer Name", "Quantity", "Reservation Date", "Payment Amount", "Seller Name");
+        System.out.printf("%s %n", horizontalLine);
 
         for (Reservation reservation : response.getReservationsList()) {
-            System.out.printf(
-                    "%n| %-50s| %-50s| %-12s| %-16s| %-12s|%-15s|%-15s|%-16s|%n",
-                    reservation.getReservationId(),
-                    reservation.getItemId(), reservation.getItemName(), reservation.getBuyerName(), reservation.getQuantity(),
-                    reservation.getReservationDate(), reservation.getPaymentAmount(), reservation.getSellerName()
-            );
-            System.out.printf("%n+-------------------------------------------------------------------------------------------------------------------------------------------------------------+%n");
+            System.out.printf(itemFormat, reservation.getReservationId(), reservation.getItemId(), reservation.getItemName(),
+                    reservation.getBuyerName(), reservation.getQuantity(), reservation.getReservationDate(), reservation.getPaymentAmount(), reservation.getSellerName());
+            System.out.printf("%s %n", horizontalLine);
         }
         Thread.sleep(1000);
     }

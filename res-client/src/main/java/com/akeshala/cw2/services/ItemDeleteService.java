@@ -2,7 +2,7 @@ package com.akeshala.cw2.services;
 
 import com.akeshala.cw2.grpc.generated.ItemDeleteRequest;
 import com.akeshala.cw2.grpc.generated.ItemDeleteServiceGrpc;
-import com.akeshala.cw2.grpc.generated.StatusResponse;
+import com.akeshala.cw2.grpc.generated.ItemDeleteResponse;
 import io.grpc.ManagedChannel;
 
 import java.util.Scanner;
@@ -40,7 +40,7 @@ public class ItemDeleteService {
                 .setIsSentByPrimary(false)
                 .build();
 
-        StatusResponse response = clientStub.deleteItem(request);
+        ItemDeleteResponse response = clientStub.deleteItem(request);
         System.out.printf("Delete Item " + response.getStatus() + ". " + response.getMessage() + "\n");
 
         Thread.sleep(1000);

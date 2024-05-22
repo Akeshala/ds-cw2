@@ -2,7 +2,7 @@ package com.akeshala.cw2.services;
 
 import com.akeshala.cw2.grpc.generated.ReserveServiceGrpc;
 import com.akeshala.cw2.grpc.generated.ReserveRequest;
-import com.akeshala.cw2.grpc.generated.StatusResponse;
+import com.akeshala.cw2.grpc.generated.ReserveServiceResponse;
 import io.grpc.ManagedChannel;
 
 import java.util.Scanner;
@@ -47,7 +47,7 @@ public class ReservationService {
                 .setIsSentByPrimary(false)
                 .build();
 
-        StatusResponse response = clientStub.reserveItem(request);
+        ReserveServiceResponse response = clientStub.reserveItem(request);
         System.out.printf("Create reservation " + response.getStatus() + ". " + response.getMessage() + "\n");
 
         Thread.sleep(1000);

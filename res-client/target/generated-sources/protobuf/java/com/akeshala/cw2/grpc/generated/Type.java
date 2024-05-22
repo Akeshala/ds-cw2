@@ -94,7 +94,7 @@ public enum Type
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return com.akeshala.cw2.grpc.generated.ReservationService.getDescriptor().getEnumTypes().get(2);
+    return com.akeshala.cw2.grpc.generated.ReservationService.getDescriptor().getEnumTypes().get(1);
   }
 
   private static final Type[] VALUES = values();

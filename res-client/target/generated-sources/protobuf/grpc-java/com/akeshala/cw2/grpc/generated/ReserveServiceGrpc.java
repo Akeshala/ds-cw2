@@ -15,28 +15,28 @@ public final class ReserveServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ReserveRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getReserveItemMethod;
+      com.akeshala.cw2.grpc.generated.ReserveServiceResponse> getReserveItemMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "reserveItem",
       requestType = com.akeshala.cw2.grpc.generated.ReserveRequest.class,
-      responseType = com.akeshala.cw2.grpc.generated.StatusResponse.class,
+      responseType = com.akeshala.cw2.grpc.generated.ReserveServiceResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ReserveRequest,
-      com.akeshala.cw2.grpc.generated.StatusResponse> getReserveItemMethod() {
-    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ReserveRequest, com.akeshala.cw2.grpc.generated.StatusResponse> getReserveItemMethod;
+      com.akeshala.cw2.grpc.generated.ReserveServiceResponse> getReserveItemMethod() {
+    io.grpc.MethodDescriptor<com.akeshala.cw2.grpc.generated.ReserveRequest, com.akeshala.cw2.grpc.generated.ReserveServiceResponse> getReserveItemMethod;
     if ((getReserveItemMethod = ReserveServiceGrpc.getReserveItemMethod) == null) {
       synchronized (ReserveServiceGrpc.class) {
         if ((getReserveItemMethod = ReserveServiceGrpc.getReserveItemMethod) == null) {
           ReserveServiceGrpc.getReserveItemMethod = getReserveItemMethod =
-              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ReserveRequest, com.akeshala.cw2.grpc.generated.StatusResponse>newBuilder()
+              io.grpc.MethodDescriptor.<com.akeshala.cw2.grpc.generated.ReserveRequest, com.akeshala.cw2.grpc.generated.ReserveServiceResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "reserveItem"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.akeshala.cw2.grpc.generated.ReserveRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.akeshala.cw2.grpc.generated.StatusResponse.getDefaultInstance()))
+                  com.akeshala.cw2.grpc.generated.ReserveServiceResponse.getDefaultInstance()))
               .setSchemaDescriptor(new ReserveServiceMethodDescriptorSupplier("reserveItem"))
               .build();
         }
@@ -96,7 +96,7 @@ public final class ReserveServiceGrpc {
     /**
      */
     public void reserveItem(com.akeshala.cw2.grpc.generated.ReserveRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ReserveServiceResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getReserveItemMethod(), responseObserver);
     }
 
@@ -107,7 +107,7 @@ public final class ReserveServiceGrpc {
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
                 com.akeshala.cw2.grpc.generated.ReserveRequest,
-                com.akeshala.cw2.grpc.generated.StatusResponse>(
+                com.akeshala.cw2.grpc.generated.ReserveServiceResponse>(
                   this, METHODID_RESERVE_ITEM)))
           .build();
     }
@@ -130,7 +130,7 @@ public final class ReserveServiceGrpc {
     /**
      */
     public void reserveItem(com.akeshala.cw2.grpc.generated.ReserveRequest request,
-        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ReserveServiceResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getReserveItemMethod(), getCallOptions()), request, responseObserver);
     }
@@ -152,7 +152,7 @@ public final class ReserveServiceGrpc {
 
     /**
      */
-    public com.akeshala.cw2.grpc.generated.StatusResponse reserveItem(com.akeshala.cw2.grpc.generated.ReserveRequest request) {
+    public com.akeshala.cw2.grpc.generated.ReserveServiceResponse reserveItem(com.akeshala.cw2.grpc.generated.ReserveRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getReserveItemMethod(), getCallOptions(), request);
     }
@@ -174,7 +174,7 @@ public final class ReserveServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.StatusResponse> reserveItem(
+    public com.google.common.util.concurrent.ListenableFuture<com.akeshala.cw2.grpc.generated.ReserveServiceResponse> reserveItem(
         com.akeshala.cw2.grpc.generated.ReserveRequest request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getReserveItemMethod(), getCallOptions()), request);
@@ -202,7 +202,7 @@ public final class ReserveServiceGrpc {
       switch (methodId) {
         case METHODID_RESERVE_ITEM:
           serviceImpl.reserveItem((com.akeshala.cw2.grpc.generated.ReserveRequest) request,
-              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.StatusResponse>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.akeshala.cw2.grpc.generated.ReserveServiceResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();

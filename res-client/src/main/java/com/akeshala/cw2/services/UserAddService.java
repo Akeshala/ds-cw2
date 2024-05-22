@@ -1,7 +1,7 @@
 package com.akeshala.cw2.services;
 
 import com.akeshala.cw2.grpc.generated.Role;
-import com.akeshala.cw2.grpc.generated.StatusResponse;
+import com.akeshala.cw2.grpc.generated.UserAddResponse;
 import com.akeshala.cw2.grpc.generated.UserAddRequest;
 import com.akeshala.cw2.grpc.generated.UserAddServiceGrpc;
 import io.grpc.ManagedChannel;
@@ -63,7 +63,7 @@ public class UserAddService {
                 .setIsSentByPrimary(false)
                 .build();
 
-        StatusResponse response = clientStub.addUser(request);
+        UserAddResponse response = clientStub.addUser(request);
         System.out.printf("Process Add User " + response.getStatus() + ". " + response.getMessage() + "\n");
 
         Thread.sleep(1000);

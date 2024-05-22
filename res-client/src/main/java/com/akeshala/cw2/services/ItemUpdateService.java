@@ -2,7 +2,7 @@ package com.akeshala.cw2.services;
 
 import com.akeshala.cw2.grpc.generated.ItemUpdateServiceGrpc;
 import com.akeshala.cw2.grpc.generated.ItemUpdateRequest;
-import com.akeshala.cw2.grpc.generated.StatusResponse;
+import com.akeshala.cw2.grpc.generated.ItemUpdateResponse;
 import io.grpc.ManagedChannel;
 
 import java.util.Scanner;
@@ -46,7 +46,7 @@ public class ItemUpdateService {
                 .setIsSentByPrimary(false)
                 .build();
 
-        StatusResponse response = clientStub.updateItem(request);
+        ItemUpdateResponse response = clientStub.updateItem(request);
         System.out.printf("Update Item " + response.getStatus() + ". " + response.getMessage() + "\n");
 
         Thread.sleep(1000);
