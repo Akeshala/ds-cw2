@@ -105,10 +105,10 @@ public class ReservationClient {
                         itemGetAllService.handleRequest(userInput);
                         break;
                     case 4:
-                        itemDeleteService.handleRequest(userInput);
+                        itemUpdateService.handleRequest(userInput);
                         break;
                     case 5:
-                        itemUpdateService.handleRequest(userInput);
+                        itemDeleteService.handleRequest(userInput);
                         break;
                     case 6:
                         reservationService.handleRequest(userInput);
