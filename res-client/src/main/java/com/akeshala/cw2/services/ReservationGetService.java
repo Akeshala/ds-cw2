@@ -33,9 +33,9 @@ public class ReservationGetService {
         UserRequest request = UserRequest.newBuilder().setUserName(userName).build();
         ReservationSearchResponse response = clientStub.getReservations(request);
 
-        String horizontalLine = "+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+";
-        String headerFormat = "| %-60s| %-60s| %-15s| %-18s| %-15s|%-18s|%-18s|%-18s|%n";
-        String itemFormat = "| %-60s| %-60s| %-15s| %-18s| %-15s|%-18s|%-18s|%-18s|%n";
+        String horizontalLine = "+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+";
+        String headerFormat = "| %-50s| %-50s| %-15s| %-18s| %-15s|%-18s|%-18s|%-18s|%n";
+        String itemFormat = "| %-50s| %-50s| %-15s| %-18s| %-15s|%-18s|%-18s|%-18s|%n";
 
         System.out.printf("%n%s %n", horizontalLine);
         System.out.printf(headerFormat, "Reservation Id", "Item Id", "Item Name", "Buyer Name", "Quantity", "Reservation Date", "Payment Amount", "Seller Name");
