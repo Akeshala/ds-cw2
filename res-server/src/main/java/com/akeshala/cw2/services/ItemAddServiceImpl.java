@@ -46,17 +46,12 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
     public synchronized void addItem(ItemAddRequest request, StreamObserver<ItemAddResponse> responseObserver) {
         try {
             if (server.isLeader()) {
-                try {
-                    startDistributedTx(request.getItemId(), request);
-                    updateSecondaryServers(request);
-                    if (checkEligibility(request)){
-                        ((DistributedTxCoordinator) server.getTransactionItemAdd()).perform();
-                    } else {
-                        ((DistributedTxCoordinator) server.getTransactionItemAdd()).sendGlobalAbort();
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error " + e.getMessage());
-                    e.printStackTrace();
+                startDistributedTx(request.getItemId(), request);
+                updateSecondaryServers(request);
+                if (checkEligibility(request)){
+                    ((DistributedTxCoordinator) server.getTransactionItemAdd()).perform();
+                } else {
+                    ((DistributedTxCoordinator) server.getTransactionItemAdd()).sendGlobalAbort();
                 }
             } else {
                 if (request.getIsSentByPrimary()) {
